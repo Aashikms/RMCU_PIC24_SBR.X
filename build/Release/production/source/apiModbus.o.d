@@ -1,0 +1,27 @@
+build/Release/production/source/apiModbus.o:  \
+source/apiModbus.c  \
+ include/cTimer.h  \
+include/libI2C.h  \
+include/psystem.h  \
+include/config.h  \
+ include/pSystem.h  \
+include/GenericTypeDefs.h  \
+include/GenericTypeDefs.h  \
+ include/HardwareProfile.h  \
+include/apiRTC.h  \
+include/apiTask.h  \
+ include/libModemUART.h  \
+include/config.h  \
+include/psystem.h  \
+ include/apiTick.h  \
+include/apiDelay.h  \
+include/GenericTypedefs.h  \
+ include/apiModem.h  \
+include/apiModem.h  \
+include/apiModbus.h  \
+ include/libModbus.h  \
+include/apiEEPROM.h  \
+include/apiHelpers.h  \
+ include/libModemUART.h  \
+include/libModbusUART.h  \
+include/apiModbus.h 

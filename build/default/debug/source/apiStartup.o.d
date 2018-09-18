@@ -1,0 +1,26 @@
+build/default/debug/source/apiStartup.o:  \
+source/apiStartup.c  \
+ include/cTimer.h  \
+include/libI2C.h  \
+include/psystem.h  \
+include/config.h  \
+ include/pSystem.h  \
+include/GenericTypeDefs.h  \
+include/GenericTypeDefs.h  \
+ include/HardwareProfile.h  \
+include/apiRTC.h  \
+include/pSystem.h  \
+ include/apiDelay.h  \
+include/GenericTypedefs.h  \
+include/apiTick.h  \
+ include/apiModem.h  \
+include/apiModem.h  \
+include/libModemUART.h  \
+ include/config.h  \
+include/apiEEPROM.h  \
+include/apiSdcard.h  \
+ include/apiStartup.h  \
+include/libModemUART.h  \
+include/libModbusUART.h  \
+ include/psystem.h  \
+include/apiModbus.h 

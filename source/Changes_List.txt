@@ -1,0 +1,19 @@
+Ver 1.3
+-------
+Initial source code.
+
+Ver 1.3.1
+---------
+Leap year bug fixed in apiRTC.c file by changing month parsing value(from 07 to 01) in ReadRTC function.
+
+Ver 1.4
+-------
+1) Added P3 flag enable SMS command.
+2) Added ECR current limit SMS command.
+3) Added POW timer SMS command.
+4) Last Power OFF and Power ON year bug fixed.
+
+Ver 1.5, 13 Dec 2016
+-------------------
+1) Added reset timer5 SMS command.
+2) Added WM4 reading in system summary.

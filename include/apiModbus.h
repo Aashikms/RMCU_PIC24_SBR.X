@@ -1,0 +1,312 @@
+/* 
+ * File:   apiModbus.h
+ * Author: Phoenix
+ *
+ * Created on September 15, 2013, 12:01 PM
+ */
+
+#ifndef APIMODBUS_H
+#define	APIMODBUS_H
+
+#include "pSystem.h"
+
+
+#ifdef	__cplusplus
+extern "C" {
+#endif
+
+#define MODBUS_WAIT_DURATRATION     1000
+
+typedef enum
+{
+    MODBUS_ENTRY_STATE,       //Never include any state before this state.
+
+    MODBUS_RMC_SBR_SYS_PAR,  //RMC CLT system parameters
+
+    MDB_SECS,
+    MDB_MINS,
+    MDB_HOUR,
+    MDB_DATE,
+    MDB_MONTH,
+    MDB_WEEK_DAY,
+    MDB_YEAR,
+    
+    
+    
+    
+    /*PLC register related states*/
+    MDB_ISR_STATUS,
+    MDB_SBR_BATCH_MINS,
+    MDB_FILL_START_MINS,
+    MDB_FILL_STOP_MINS,
+    MDB_AERATE_START_MINS,
+    MDB_AERATE_STOP_MINS,
+    MDB_SETTLE_START_MINS,
+    MDB_SETTLE_STOP_MINS,
+    MDB_DECANT_START_MINS,
+    MDB_DECANT_STOP_MINS,
+    MDB_IDLE_START_MINS,
+    MDB_IDLE_STOP_MINS,
+    MDB_INT_AER_FRQ_MINS,
+    MDB_INT_AER_RUN_MINS,
+    MDB_P1_CUR_MAX_THRLD,
+    MDB_P1_CUR_MIN_THRLD,
+    MDB_P2_CUR_MAX_THRLD,
+    MDB_P2_CUR_MIN_THRLD,
+    MDB_P3_CUR_MAX_THRLD,
+    MDB_P3_CUR_MIN_THRLD,
+    MDB_SBR_HIGH_LEVEL_THRLD,
+    MDB_SBR_LOW_LEVEL_THRLD,
+    MDB_SBR_HIGH_WINDOW_THRLD,
+    MDB_SBR_LOW_WINDOW_THRLD,
+    MDB_SBR_SENSOR_CHECK_THRLD,
+    MDB_SBR_OVERFILL_TIMER_THRLD,        
+    
+    MDB_SYSTEM_RUNNING_HOURS,        //RMC system summary parameters
+    MDB_BATCH_RUNNING_COUNT,
+    MDB_BATCH_CYCLE_COUNT,
+    MDB_FLOW_RATE,
+    MDB_FLOW_TOTALIZER,
+    MDB_WATER_LEVEL,
+    
+    MDB_SBR_SYM_MODE,               //RMC system status parameters
+    MDB_SBR_SENSOR_STAT,
+    MDB_LAST_POWEROFF_DATE,
+    MDB_LAST_POWEROFF_MON,
+    MDB_LAST_POWEROFF_YEAR,
+    MDB_LAST_POWEROFF_HOUR,
+    MDB_LAST_POWEROFF_MINS,
+    MDB_LAST_POWEROFF_SECS,
+    MDB_LAST_POWERON_DATE,
+    MDB_LAST_POWERON_MON,
+    MDB_LAST_POWERON_YEAR,
+    MDB_LAST_POWERON_HOUR,
+    MDB_LAST_POWERON_MINS,
+    MDB_LAST_POWERON_SECS,
+    
+    MDB_TOTAL_SYS_ENERGY,           //RMC Energy Meter parameters
+    MDB_TOTAL_AVG_CUR,
+    MDB_TOTAL_AVG_PF,
+    MDB_P1_CURRENT,
+    MDB_P2_CURRENT,
+    MDB_P3_CURRENT,
+    
+    MDB_FLT_CODE,                   //RMC system Alarms
+    MDB_FLTCODE_VAL,
+    
+    MDB_STOP_PARSE,    
+    MODBUS_EXIT_STATE,             // TO exist the ModBus state
+
+    //Modbus Write Commands
+    MDB_SET_TIMERS,
+    /*MDB_SET_TIMER1,
+    MDB_SET_TIMER2,
+    MDB_SET_TIMER3,
+    MDB_SET_TIMER4,*/
+    /*MDB_P1_CUR_MIN_THRLD_W,
+    MDB_P1_CUR_MAX_THRLD_W,
+    MDB_P2_CUR_MIN_THRLD_W,
+    MDB_P2_CUR_MAX_THRLD_W,
+    MDB_P3_CUR_MIN_THRLD_W,
+    MDB_P3_CUR_MAX_THRLD_W,*/
+    MDB_RESET_PLC,
+    MDB_SBR_MAINTENANCE,
+    MDB_SET_PLC_RTC,
+               
+    MODBUS_FRAME_BYTE_STREAM,
+    MODBUD_SEND_DEV_ID_GPRS,        
+    MODBUS_TRIGGER_SYM_SUMMERY_GPRS,
+    MODBUS_TRIGGER_SYM_STATUS_GPRS,
+    MODBUS_TRIGGER_EM_GPRS,
+    MODBUS_TRIGGER_RMCU_ALARM_GPRS,
+    MODBUS_WAITTO_FINISH_GPRS,
+    MODBUS_SEND_PLC_SETTINGS_GPRS,
+
+    MODBUS_SET_DLY,
+    MODBUS_DLY_WAIT,
+    MODBUS_STANDBY,
+    MDB_DUMMY_STATE,
+
+}_MODBUS_STATE;
+
+extern _MODBUS_STATE MODBUS_STATE;
+extern _MODBUS_STATE cMODBUS_STATE;
+extern _MODBUS_STATE nMODBUS_STATE;
+extern _MODBUS_STATE MODBUS_RESP_STATE;
+
+#define READ_COMMAND            0x03
+#define WRITE_COMMAND           0x06
+
+#define WRITE_SIN_REG		0x06
+#define WRITE_MUL_REG		0x10
+
+#define FORCE_SINGLE_COIL   0x05
+
+
+#define MODBUS_BYTE_COUNT       0x01
+
+#if (MODBUS_RETRY_COUNT < 1)
+    #error "MOSBUS_RETRY_COUNT should be 1 or above, cannot be 0"
+#endif
+
+#define READ        1
+#define WRITE       0
+
+#if (MODBUS_RETRY_COUNT < 1)
+    #error "MOSBUS_RETRY_COUNT should be 1 or above, cannot be 0"
+#endif
+
+
+typedef struct __PACKED
+{
+    UINT32_VAL  SYSTEM_RUNNING_HOURS;
+    UINT32_VAL  BATCH_COUNT;
+    UINT32_VAL  CYCLE_COUNT;
+    UINT32_VAL  FLOW_TOTALIZER;
+    UINT16_VAL  FLOW_RATE;
+    UINT16_VAL  SBR_WATER_LEVEL;
+    BYTE        SBR_SYM_MODE;
+    UINT16_VAL  SBR_SENSOR_STAT;
+    _DATETIME   LAST_POWERON_DT;
+    _DATETIME   LAST_POWEROFF_DT;
+}_RMC_SBR_SYS_PAR;
+
+typedef struct __PACKED
+{
+    UINT8_BITS  SBR_ISR;
+    UINT16_VAL  SBR_BATCH_TMR_MIN;
+    UINT16_VAL  FILL_SBR_START_MIN;
+    UINT16_VAL  FILL_SBR_STOP_MIN;
+    UINT16_VAL  AERATE_SBR_START_MIN;
+    UINT16_VAL  AERATE_SBR_STOP_MIN;
+    UINT16_VAL  PRE_SETTLE_SBR_START_MIN;
+    UINT16_VAL  PRE_SETTLE_SBR_STOP_MIN;
+    UINT16_VAL  DECANT_SBR_START_MIN;
+    UINT16_VAL  DECANT_SBR_STOP_MIN;
+    UINT16_VAL  IDLE_SBR_START_MIN;
+    UINT16_VAL  IDLE_SBR_STOP_MIN;
+    UINT16_VAL  INTER_AERATE_FRQ_MIN;
+    UINT16_VAL  INTER_AERATE_RUN_MIN;
+    UINT32_VAL  P1_CUR_MIN_THRLD;
+    UINT32_VAL  P1_CUR_MAX_THRLD;
+    UINT32_VAL  P2_CUR_MIN_THRLD;
+    UINT32_VAL  P2_CUR_MAX_THRLD;
+    UINT32_VAL  P3_CUR_MIN_THRLD;
+    UINT32_VAL  P3_CUR_MAX_THRLD;
+    UINT16_VAL  SBR_TANK_HIGH_THRLD;
+    UINT16_VAL  SBR_TANK_LOW_THRLD;
+    UINT16_VAL  SBR_TANK_HIGH_WINDOW_THRLD;
+    UINT16_VAL  SBR_TANK_LOW_WINDOW_THRLD;
+    UINT16_VAL  SBR_TANK_SENSOR_CHECK_THRLD;
+    UINT16_VAL  SBR_TANK_OVERFILL_TIMER_THRLD;
+}_RMC_SBR_SYS_SET;
+
+
+extern _RMC_SBR_SYS_PAR RMC_SBR_SYS_PAR;
+extern _RMC_SBR_SYS_SET RMC_SBR_SYS_SET;
+
+typedef struct __PACKED
+{
+
+    double  P1_CUR_MIN_THRLD;
+    double  P1_CUR_MAX_THRLD;
+    double  P2_CUR_MIN_THRLD;
+    double  P2_CUR_MAX_THRLD;
+    double  P3_CUR_MIN_THRLD;
+    double  P3_CUR_MAX_THRLD;
+    }_RMC_SBR_SYS_PAR_FLOAT;
+
+extern _RMC_SBR_SYS_PAR_FLOAT RMC_SBR_SYS_PAR_FLOAT;
+
+    
+typedef struct __PACKED
+{
+    UINT32_VAL P1_CURRENT;
+    UINT32_VAL P2_CURRENT;
+    UINT32_VAL P3_CURRENT;
+    UINT32_VAL ECR_CURRENT;
+    UINT32_VAL TOTAL_SYS_ENERGY;
+    UINT32_VAL TOTAL_AVG_CUR;
+    UINT32_VAL TOTAL_AVG_PF;
+}_RMC_ENG_MTR_PAR;
+
+extern _RMC_ENG_MTR_PAR RMC_ENG_MTR_PAR;
+
+typedef struct __PACKED
+{
+    UINT32_VAL   SBR_FAULT_CODE;
+    UINT8  FAULT_CODE_VAL;
+}_RMC_ALARM;
+
+extern _RMC_ALARM RMC_ALARM;
+
+typedef struct __PACKED
+{
+    UINT16_BITS TIMER1_SECS;
+    UINT16_BITS TIMER2_SECS;
+    UINT16_BITS TIMER3_SECS;
+    UINT16_BITS TIMER4_SECS;
+    //UINT32_VAL  TIMER3_SECS;                /* Added By Vijay */
+    UINT16_BITS BATCH_CYCLE;
+    UINT16_BITS FILL_START;
+    UINT16_BITS FILL_END;
+    UINT16_BITS AERATION_START;
+    UINT16_BITS AERATION_END;
+    UINT16_BITS SETTLE_START;
+    UINT16_BITS SETTLE_END;
+    UINT16_BITS DECANT_START;
+    UINT16_BITS DECANT_END;
+    UINT16_BITS IDLE_START;
+    UINT16_BITS IDLE_END;
+    
+    UINT32_VAL  P1_CUR_MIN_THRLD;
+    UINT32_VAL  P1_CUR_MAX_THRLD;
+    UINT32_VAL  P2_CUR_MIN_THRLD;
+    UINT32_VAL  P2_CUR_MAX_THRLD;
+    UINT32_VAL  P3_CUR_MIN_THRLD;
+    UINT32_VAL  P3_CUR_MAX_THRLD;
+    BYTE        SBR_SYM_MODE;
+}_MDB_WRITE_DATA;
+
+extern _MDB_WRITE_DATA MDB_WRITE_DATA;
+
+extern UINT8 PLC_DateandTime;
+extern UINT16 Dummy_SMS_Set;
+
+void ModbusStack(void);
+void ConfigModbus(void);
+void NextModbusState(void);
+void GetMdbResponse(void);
+//void GetMdbResponse_2(void);
+void NextWriteModbusState(void);
+
+void Construct_EMP_ParamsPacket(void);
+void Construct_SBR_Alarms_Packet(void);
+void Construct_SBR_Status_ParamsPacket(void);
+void Construct_SBR_Summery_ParamsPacket(void);
+void Construct_SBR_Settings_ParamsPacket(void);
+void Construct_Device_ID_Packet(void);
+BYTE ValidDateTime(void);
+void WriteDateTime(_DATETIME DT,UINT16 RegAddr);
+void WriteCurrDateTime(_DATETIME DT,UINT16 RegAddr);
+void ReadPrevTime(void);
+void GetMdbPrevTime(void);
+
+void ProcessFloatResult(UINT32_VAL *val);
+void ProcessFloatResultforEnergy(UINT32_VAL *val);
+void ProcessFloatResultforSMS(UINT32_VAL *val,double *Dst);
+
+unsigned int Hex2Ascii (unsigned char DataByte);
+BYTE CalculateFCS(BYTE *DataAddrPtr,UINT16 DataLength);
+UINT32_VAL GetResponseBytes(UINT16 StAddress,UINT16 Length);
+UINT32_VAL GetResponseBytes1(UINT16 StAddress,UINT16 Length);
+void ModbusRead(UINT16 DeviveID, UINT16 RegAddr,UINT8 NoofRegstoRead);
+void ModbusWrite(UINT16 DeviveID, UINT16 RegAddr,UINT8 FunctionCode,UINT8 *pData,UINT8 NoofRegstoWrite);
+void CopyServerTime(void);
+
+#ifdef	__cplusplus
+}
+#endif
+
+#endif	/* APIMODBUS_H */
+
